@@ -33,6 +33,9 @@ export function simplifiedMarkdown(html: string): string {
   // Convert blockquotes
   html = html.replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gis, "\n> $1\n");
 
+  // Handle images
+  html = html.replace(/<img[^>]*src=["'](.*?)["'][^>]*>/gi, "![Image]($1)");
+
   // Handle code blocks
   html = html.replace(/<pre[^>]*><code[^>]*>(.*?)<\/code><\/pre>/gis, "\n```\n$1\n```\n");
   html = html.replace(/<code[^>]*>(.*?)<\/code>/gi, "`$1`");

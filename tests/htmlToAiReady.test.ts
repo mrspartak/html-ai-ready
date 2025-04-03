@@ -65,7 +65,7 @@ describe("htmlToAiReady", () => {
   it("should handle images with alt text", () => {
     const html = "<img src='image.jpg' alt='Description of image'>";
     const result = htmlToAiReady(html);
-    expect(result).toBe("");
+    expect(result).toBe("![Image](image.jpg)");
   });
 
   it("should handle blockquotes", () => {

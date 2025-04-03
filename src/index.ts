@@ -4,7 +4,7 @@ import { stripTagsWithContent } from "./utilities/striptag";
 
 export function htmlToAiReady(html: string): string {
   // Strip scripts, styles, and other non-content tags
-  html = stripTagsWithContent(html, ["head", "img", "script", "style", "svg", "iframe", "noscript", "object", "embed"]);
+  html = stripTagsWithContent(html, ["head", "script", "style", "svg", "iframe", "noscript", "object", "embed"]);
 
   // Cleanup HTML
   html = cleanupHtml(html);

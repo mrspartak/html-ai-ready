@@ -1,9 +1,21 @@
-export function stripTagWithContent(html: string, tag: string): string {
+type StripTagWithContentOptions = {
+  handleSelfClosingTags?: boolean;
+};
+
+const defaultOptions: StripTagWithContentOptions = {
+  handleSelfClosingTags: true,
+};
+
+export function stripTagWithContent(html: string, tag: string, options: StripTagWithContentOptions = {}): string {
   if (!html) return "";
 
+  options = { ...defaultOptions, ...options };
+
   // Handle self-closing tags first
-  const selfClosingRegex = new RegExp(`<\\s*${tag}\\b\\s*[^>]*\\s*\\/>`, "gi");
-  html = html.replace(selfClosingRegex, "");
+  if (options.handleSelfClosingTags === true) {
+    const selfClosingRegex = new RegExp(`<\\s*${tag}\\b\\s*[^>]*\\s*\\/>`, "gi");
+    html = html.replace(selfClosingRegex, "");
+  }
 
   // Process nested tags with a character-by-character approach
   // Add flexibility for whitespace around tag names and word boundary for exact matches
@@ -63,8 +75,10 @@ export function stripTagWithContent(html: string, tag: string): string {
   return result;
 }
 
-export function stripTagsWithContent(html: string, tags: string[]): string {
+export function stripTagsWithContent(html: string, tags: string[], options: StripTagWithContentOptions = {}): string {
   if (!html) return "";
 
-  return tags.reduce((acc, tag) => stripTagWithContent(acc, tag), html);
+  options = { ...defaultOptions, ...options };
+
+  return tags.reduce((acc, tag) => stripTagWithContent(acc, tag, options), html);
 }
