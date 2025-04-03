@@ -42,7 +42,7 @@ console.log(aiReady);
 ## Benchmark
 
 Take these with a grain of salt, as I did not setup a proper benchmark environment.
-I did 10 runs over a medium sized HTML page (150KB) with different tags and content in it.
+I did 10 runs over a medium sized HTML page (150KB) (33230 tokens) with different tags and content in it.
 
 | Library                                          | Processing Time | Token Count   |
 | ------------------------------------------------ | --------------- | ------------- |
