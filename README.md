@@ -31,10 +31,10 @@ bun add @mrspartak/html-ai-ready
 ## Usage
 
 ```ts
-import { htmlToAiReady } from "@mrspartak/html-ai-ready";
+import { htmlToAiReady, PRESET_FAST } from "@mrspartak/html-ai-ready";
 
 const html = "<p>Hello, world!</p>";
-const aiReady = htmlToAiReady(html);
+const aiReady = htmlToAiReady(html, PRESET_FAST);
 
 console.log(aiReady);
 ```
@@ -49,6 +49,60 @@ I did 10 runs over a medium sized HTML page (150KB) (33230 tokens) with differen
 | @mrspartak/html-ai-ready                         | 4.97ms          | 3,814 tokens  |
 | cherio (parse + remove some tags + text content) | 9.98ms          | 5,850 tokens  |
 | node-html-markdown (convert html to markdown)    | 20.35ms         | 10,027 tokens |
+
+Steam Main Page (1MB) (345,697 tokens)
+
+| Library                                          | Processing Time | Token Count   |
+| ------------------------------------------------ | --------------- | ------------- |
+| @mrspartak/html-ai-ready                         | 18.62ms         | 12,128 tokens |
+| cherio (parse + remove some tags + text content) | 87.81ms         | 11,055 tokens |
+| node-html-markdown (convert html to markdown)    | 106.86ms        | 10,027 tokens |
+
+## Some website statistics
+
+To determing tags that I would like to strip, first of course I gathered tags that would not make any context for AI. Those are style, head, iframe etc.
+But stripping the tags is costly operation, so I wanted to actually know if stripping them makes any difference. So I gathered a list of ~800 random websites, crawled and parsed them.
+Here are some details:
+
+### Page Size Statistics
+
+| Metric  | Value            |
+| ------- | ---------------- |
+| Minimum | 242 bytes        |
+| Maximum | 11,647,892 bytes |
+| Average | 517,804 bytes    |
+| Median  | 346,929 bytes    |
+
+### Crawl Timing Statistics
+
+| Metric  | Value    |
+| ------- | -------- |
+| Average | 3,202 ms |
+| Median  | 2,504 ms |
+
+### Element Size Analysis
+
+Ordered by total size across all pages:
+
+| Element  | Average Size (bytes) | % of Page | % of Body | Total Size (bytes) |
+| -------- | -------------------- | --------- | --------- | ------------------ |
+| body     | 406,357              | 76.11%    | -         | 349,061,078        |
+| head     | 110,629              | 23.55%    | 73.40%    | 95,030,079         |
+| links    | 98,256               | 19.18%    | 24.71%    | 84,401,659         |
+| svgs     | 83,426               | 12.76%    | 15.38%    | 71,662,569         |
+| nav      | 103,673              | 12.17%    | 15.00%    | 89,055,316         |
+| script   | 73,849               | 10.84%    | 14.09%    | 63,435,956         |
+| images   | 31,274               | 6.18%     | 8.17%     | 26,864,083         |
+| footer   | 17,350               | 4.21%     | 5.81%     | 14,903,361         |
+| style    | 16,031               | 3.82%     | 4.80%     | 13,770,735         |
+| forms    | 14,827               | 3.29%     | 4.33%     | 12,736,770         |
+| button   | 12,395               | 2.54%     | 3.47%     | 10,647,352         |
+| comments | 7,163                | 1.67%     | 2.28%     | 6,152,769          |
+| aside    | 6,539                | 1.04%     | 1.19%     | 5,617,229          |
+| noscript | 1,663                | 0.32%     | 0.44%     | 1,428,938          |
+| iframe   | 902                  | 0.27%     | 0.40%     | 775,052            |
+| video    | 74                   | 0.03%     | 0.03%     | 63,815             |
+| canvas   | 4                    | 0.00%     | 0.00%     | 3,149              |
 
 ## Contributing
 

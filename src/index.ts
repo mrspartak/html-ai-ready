@@ -2,9 +2,38 @@ import { cleanupHtml } from "./utilities/cleanup_html";
 import { simplifiedMarkdown } from "./utilities/simplified_markdown";
 import { stripTagsWithContent } from "./utilities/striptag";
 
-export function htmlToAiReady(html: string): string {
+const PRESETS = {
+  FAST: {
+    tags: ["head", "svg", "nav", "script", "style", "form", "button"],
+  },
+  QUALITY: {
+    tags: [
+      "head",
+      "svg",
+      "nav",
+      "script",
+      "style",
+      "form",
+      "button",
+      "aside",
+      "noscript",
+      "iframe",
+      "video",
+      "canvas",
+      "object",
+      "audio",
+      "embed",
+      "link",
+    ],
+  },
+};
+export type Preset = keyof typeof PRESETS;
+export const PRESET_FAST: Preset = "FAST";
+export const PRESET_QUALITY: Preset = "QUALITY";
+
+export function htmlToAiReady(html: string, preset: Preset = PRESET_FAST): string {
   // Strip scripts, styles, and other non-content tags
-  html = stripTagsWithContent(html, ["head", "script", "style", "svg", "iframe", "noscript", "object", "embed"]);
+  html = stripTagsWithContent(html, PRESETS[preset].tags);
 
   // Cleanup HTML
   html = cleanupHtml(html);
