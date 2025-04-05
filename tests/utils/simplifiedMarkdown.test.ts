@@ -59,10 +59,6 @@ describe("simplifiedMarkdown", () => {
     expect(simplifiedMarkdown("Line 1<br/>Line 2")).toContain("Line 1\nLine 2");
   });
 
-  it("should convert blockquotes to markdown", () => {
-    expect(simplifiedMarkdown("<blockquote>Quoted text</blockquote>")).toContain("> Quoted text");
-  });
-
   it("should convert code blocks to markdown", () => {
     expect(simplifiedMarkdown("<pre><code>console.log('hello');</code></pre>")).toContain(
       "```\nconsole.log('hello');\n```",
@@ -105,7 +101,6 @@ describe("simplifiedMarkdown", () => {
     expect(markdown).toContain("[a link](https://example.com)");
     expect(markdown).toContain("- Item with *emphasis*");
     expect(markdown).toContain("- Another item");
-    expect(markdown).toContain("> This is a quote");
     expect(markdown).toContain("```\nfunction test() { return true; }\n```");
   });
 });

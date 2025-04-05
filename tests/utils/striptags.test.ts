@@ -12,10 +12,9 @@ describe("stripTagWithContent", () => {
 
   it("should strip a self-closing tag", () => {
     expect(stripTagWithContent("Before <img src='image.jpg' /> After", "img")).toBe("Before  After");
-    // TODO: fix this test
-    /* expect(stripTagWithContent("Before <img src='image.jpg' /> After", "img", { handleSelfClosingTags: false })).toBe(
+    expect(stripTagWithContent("Before <img src='image.jpg' /> After", "img", { handleSelfClosingTags: false })).toBe(
       "Before <img src='image.jpg' /> After",
-    ); */
+    );
   });
 
   it("should be case-insensitive when stripping tags", () => {

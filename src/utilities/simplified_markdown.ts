@@ -17,24 +17,30 @@ export function simplifiedMarkdown(html: string): string {
     return match.replace(/<li[^>]*>(.*?)<\/li>/gi, (match, content) => `\n${index++}. ${content}`);
   });
 
-  // Convert links to markdown
-  html = html.replace(/<a[^>]*href=["'](.*?)["'][^>]*>(.*?)<\/a>/gi, "[$2]($1)");
+  // Convert links to simplified format - preserving any complex content inside
+  html = html.replace(
+    /<a[^>]*(?:title=["'](.*?)["'][^>]*)?href=["'][^"']*["'][^>]*>([\s\S]*?)<\/a>/gi,
+    (match, title, content) => {
+      if (title) {
+        return `[Link (${title}): ${content}]`;
+      }
+      return `[Link: ${content}]`;
+    },
+  );
 
-  // Convert emphasis
-  html = html.replace(/<strong[^>]*>(.*?)<\/strong>/gi, "**$1**");
-  html = html.replace(/<b[^>]*>(.*?)<\/b>/gi, "**$1**");
-  html = html.replace(/<em[^>]*>(.*?)<\/em>/gi, "*$1*");
-  html = html.replace(/<i[^>]*>(.*?)<\/i>/gi, "*$1*");
+  // Convert emphasis (combined regexes)
+  html = html.replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, "**$2**");
+  html = html.replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, "*$2*");
 
   // Convert paragraphs and line breaks
   html = html.replace(/<p[^>]*>(.*?)<\/p>/gi, "\n\n$1\n\n");
   html = html.replace(/<br\s*\/?>/gi, "\n");
 
-  // Convert blockquotes
-  html = html.replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gis, "\n> $1\n");
+  // Handle images - only keep those with alt attributes
+  html = html.replace(/<img[^>]*alt=["'](.*?)["'][^>]*>/gi, "[Image: $1]");
 
-  // Handle images
-  html = html.replace(/<img[^>]*src=["'](.*?)["'][^>]*>/gi, "![Image]($1)");
+  // Remove any remaining images without alt text
+  html = html.replace(/<img[^>]*>/gi, "");
 
   // Handle code blocks
   html = html.replace(/<pre[^>]*><code[^>]*>(.*?)<\/code><\/pre>/gis, "\n```\n$1\n```\n");

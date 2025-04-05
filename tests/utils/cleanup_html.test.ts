@@ -14,18 +14,6 @@ describe("cleanupHtml", () => {
     expect(cleanupHtml("<![CDATA[\nmulti-line\ncdata\n]]>")).toBe("");
   });
 
-  it("should remove DOCTYPE declarations", () => {
-    expect(cleanupHtml("<!DOCTYPE html>content")).toBe("content");
-    expect(
-      cleanupHtml('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">content'),
-    ).toBe("content");
-  });
-
-  it("should remove XML declarations", () => {
-    expect(cleanupHtml('<?xml version="1.0" encoding="UTF-8"?>content')).toBe("content");
-    expect(cleanupHtml('before <?xml version="1.0" ?> after')).toBe("before  after");
-  });
-
   it("should handle multiple different elements", () => {
     const html = `
       <?xml version="1.0" encoding="UTF-8"?>
@@ -44,8 +32,8 @@ describe("cleanupHtml", () => {
     `;
 
     const expected = `
-      
-      
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE html>
       <html>
         
         <head>

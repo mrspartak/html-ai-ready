@@ -7,11 +7,5 @@ export function cleanupHtml(html: string): string {
   // Remove CDATA sections
   html = html.replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, "");
 
-  // Remove DOCTYPE declarations
-  html = html.replace(/<!DOCTYPE[\s\S]*?>/g, "");
-
-  // Remove XML declarations
-  html = html.replace(/<\?xml[\s\S]*?\?>/g, "");
-
   return html;
 }

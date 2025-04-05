@@ -19,7 +19,13 @@ export function stripTagWithContent(html: string, tag: string, options: StripTag
 
   // Process nested tags with a character-by-character approach
   // Add flexibility for whitespace around tag names and word boundary for exact matches
-  const openingTagRegex = new RegExp(`<\\s*${tag}\\b\\s*(?:[^>]*)?>`, "i");
+  // When handleSelfClosingTags is false, exclude self-closing tags from the opening tag pattern
+  const openingTagPattern =
+    options.handleSelfClosingTags === false
+      ? `<\\s*${tag}\\b\\s*(?:[^>/]*[^>/])?>` // Exclude patterns ending with />
+      : `<\\s*${tag}\\b\\s*(?:[^>]*)?>`; // Include all patterns
+
+  const openingTagRegex = new RegExp(openingTagPattern, "i");
   const closingTagRegex = new RegExp(`<\\s*/\\s*${tag}\\b\\s*>`, "i");
 
   let result = "";

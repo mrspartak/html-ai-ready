@@ -41,7 +41,7 @@ describe("htmlToAiReady", () => {
   it("should handle links", () => {
     const html = "<p>Visit our <a href='https://example.com'>website</a></p>";
     const result = htmlToAiReady(html);
-    expect(result).toBe("Visit our [website](https://example.com)");
+    expect(result).toBe("Visit our [Link: website]");
   });
 
   it("should handle tables", () => {
@@ -62,16 +62,14 @@ describe("htmlToAiReady", () => {
     expect(result).toBe("``` function example() { return true; } ```");
   });
 
-  it("should handle images with alt text", () => {
+  it("should handle images", () => {
     const html = "<img src='image.jpg' alt='Description of image'>";
     const result = htmlToAiReady(html);
-    expect(result).toBe("![Image](image.jpg)");
-  });
+    expect(result).toBe("[Image: Description of image]");
 
-  it("should handle blockquotes", () => {
-    const html = "<blockquote><p>Quoted text</p></blockquote>";
-    const result = htmlToAiReady(html);
-    expect(result).toBe("> Quoted text");
+    const html2 = "<img src='image.jpg'>";
+    const result2 = htmlToAiReady(html2);
+    expect(result2).toBe("");
   });
 
   it("should ignore script and style tags", () => {

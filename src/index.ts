@@ -5,6 +5,9 @@ import { stripTagsWithContent } from "./utilities/striptag";
 const PRESETS = {
   FAST: {
     tags: ["head", "svg", "nav", "script", "style", "form", "button"],
+    stripTagsOptions: {
+      handleSelfClosingTags: false,
+    },
   },
   QUALITY: {
     tags: [
@@ -25,6 +28,9 @@ const PRESETS = {
       "embed",
       "link",
     ],
+    stripTagsOptions: {
+      handleSelfClosingTags: true,
+    },
   },
 };
 export type Preset = keyof typeof PRESETS;
@@ -33,7 +39,7 @@ export const PRESET_QUALITY: Preset = "QUALITY";
 
 export function htmlToAiReady(html: string, preset: Preset = PRESET_FAST): string {
   // Strip scripts, styles, and other non-content tags
-  html = stripTagsWithContent(html, PRESETS[preset].tags);
+  html = stripTagsWithContent(html, PRESETS[preset].tags, PRESETS[preset].stripTagsOptions);
 
   // Cleanup HTML
   html = cleanupHtml(html);
