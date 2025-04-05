@@ -37,11 +37,9 @@ describe("simplifiedMarkdown", () => {
   });
 
   it("should convert links to markdown", () => {
-    expect(simplifiedMarkdown('<a href="https://example.com">Example</a>')).toBe("[Example](https://example.com)");
+    expect(simplifiedMarkdown('<a href="https://example.com">Example</a>')).toBe("[Link: Example]");
 
-    expect(simplifiedMarkdown('<a href="https://example.com" target="_blank">Example</a>')).toBe(
-      "[Example](https://example.com)",
-    );
+    expect(simplifiedMarkdown('<a href="https://example.com" target="_blank">Example</a>')).toBe("[Link: Example]");
   });
 
   it("should convert emphasis tags to markdown", () => {
@@ -98,7 +96,7 @@ describe("simplifiedMarkdown", () => {
     const markdown = simplifiedMarkdown(html);
     expect(markdown).toContain("# Document Title");
     expect(markdown).toContain("This is an **important** paragraph");
-    expect(markdown).toContain("[a link](https://example.com)");
+    expect(markdown).toContain("[Link: a link]");
     expect(markdown).toContain("- Item with *emphasis*");
     expect(markdown).toContain("- Another item");
     expect(markdown).toContain("```\nfunction test() { return true; }\n```");
