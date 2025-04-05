@@ -171,10 +171,10 @@ The other and actually really good approach is to use HTML -&gt; Markdown conver
 <p>This library is experimental and in personal tests showed the same quality results as plain HTML or Markdown, but much less tokens and a bit faster.</p>
 <a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><pre><code class="language-bash"><span class="hl-0"># yarn</span><br/><span class="hl-1">yarn</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span><br/><span class="hl-0"># npm</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">i</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span><br/><span class="hl-0"># pnpm</span><br/><span class="hl-1">pnpm</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span><br/><span class="hl-0"># bun</span><br/><span class="hl-1">bun</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span>
 </code><button>Copy</button></pre>
-<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-2"> { </span><span class="hl-5">htmlToAiReady</span><span class="hl-2"> } </span><span class="hl-4">from</span><span class="hl-2"> </span><span class="hl-3">&quot;@mrspartak/html-ai-ready&quot;</span><span class="hl-2">;</span><br/><br/><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">html</span><span class="hl-2"> = </span><span class="hl-3">&quot;&lt;p&gt;Hello, world!&lt;/p&gt;&quot;</span><span class="hl-2">;</span><br/><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">aiReady</span><span class="hl-2"> = </span><span class="hl-1">htmlToAiReady</span><span class="hl-2">(</span><span class="hl-5">html</span><span class="hl-2">);</span><br/><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-5">aiReady</span><span class="hl-2">);</span>
+<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-2"> { </span><span class="hl-5">htmlToAiReady</span><span class="hl-2">, </span><span class="hl-5">PRESET_FAST</span><span class="hl-2"> } </span><span class="hl-4">from</span><span class="hl-2"> </span><span class="hl-3">&quot;@mrspartak/html-ai-ready&quot;</span><span class="hl-2">;</span><br/><br/><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">html</span><span class="hl-2"> = </span><span class="hl-3">&quot;&lt;p&gt;Hello, world!&lt;/p&gt;&quot;</span><span class="hl-2">;</span><br/><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">aiReady</span><span class="hl-2"> = </span><span class="hl-1">htmlToAiReady</span><span class="hl-2">(</span><span class="hl-5">html</span><span class="hl-2">, </span><span class="hl-7">PRESET_FAST</span><span class="hl-2">);</span><br/><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-5">aiReady</span><span class="hl-2">);</span>
 </code><button>Copy</button></pre>
 <a id="md:benchmark" class="tsd-anchor"></a><h2><a href="#md:benchmark">Benchmark</a></h2><p>Take these with a grain of salt, as I did not setup a proper benchmark environment.
-I did 10 runs over a medium sized HTML page (150KB) with different tags and content in it.</p>
+I did 10 runs over a medium sized HTML page (150KB) (33230 tokens) with different tags and content in it.</p>
 <table>
 <thead>
 <tr>
@@ -199,9 +199,208 @@ I did 10 runs over a medium sized HTML page (150KB) with different tags and cont
 <td>10,027 tokens</td>
 </tr>
 </tbody></table>
+<p>Steam Main Page (1MB) (345,697 tokens)</p>
+<table>
+<thead>
+<tr>
+<th>Library</th>
+<th>Processing Time</th>
+<th>Token Count</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@mrspartak/html-ai-ready</td>
+<td>18.62ms</td>
+<td>12,128 tokens</td>
+</tr>
+<tr>
+<td>cherio (parse + remove some tags + text content)</td>
+<td>87.81ms</td>
+<td>11,055 tokens</td>
+</tr>
+<tr>
+<td>node-html-markdown (convert html to markdown)</td>
+<td>106.86ms</td>
+<td>10,027 tokens</td>
+</tr>
+</tbody></table>
+<a id="md:some-website-statistics" class="tsd-anchor"></a><h2><a href="#md:some-website-statistics">Some website statistics</a></h2><p>To determing tags that I would like to strip, first of course I gathered tags that would not make any context for AI. Those are style, head, iframe etc.
+But stripping the tags is costly operation, so I wanted to actually know if stripping them makes any difference. So I gathered a list of ~800 random websites, crawled and parsed them.
+Here are some details:</p>
+<a id="md:page-size-statistics" class="tsd-anchor"></a><h3><a href="#md:page-size-statistics">Page Size Statistics</a></h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Minimum</td>
+<td>242 bytes</td>
+</tr>
+<tr>
+<td>Maximum</td>
+<td>11,647,892 bytes</td>
+</tr>
+<tr>
+<td>Average</td>
+<td>517,804 bytes</td>
+</tr>
+<tr>
+<td>Median</td>
+<td>346,929 bytes</td>
+</tr>
+</tbody></table>
+<a id="md:crawl-timing-statistics" class="tsd-anchor"></a><h3><a href="#md:crawl-timing-statistics">Crawl Timing Statistics</a></h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Average</td>
+<td>3,202 ms</td>
+</tr>
+<tr>
+<td>Median</td>
+<td>2,504 ms</td>
+</tr>
+</tbody></table>
+<a id="md:element-size-analysis" class="tsd-anchor"></a><h3><a href="#md:element-size-analysis">Element Size Analysis</a></h3><p>Ordered by total size across all pages:</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Average Size (bytes)</th>
+<th>% of Page</th>
+<th>% of Body</th>
+<th>Total Size (bytes)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>body</td>
+<td>406,357</td>
+<td>76.11%</td>
+<td>-</td>
+<td>349,061,078</td>
+</tr>
+<tr>
+<td>head</td>
+<td>110,629</td>
+<td>23.55%</td>
+<td>73.40%</td>
+<td>95,030,079</td>
+</tr>
+<tr>
+<td>links</td>
+<td>98,256</td>
+<td>19.18%</td>
+<td>24.71%</td>
+<td>84,401,659</td>
+</tr>
+<tr>
+<td>svgs</td>
+<td>83,426</td>
+<td>12.76%</td>
+<td>15.38%</td>
+<td>71,662,569</td>
+</tr>
+<tr>
+<td>nav</td>
+<td>103,673</td>
+<td>12.17%</td>
+<td>15.00%</td>
+<td>89,055,316</td>
+</tr>
+<tr>
+<td>script</td>
+<td>73,849</td>
+<td>10.84%</td>
+<td>14.09%</td>
+<td>63,435,956</td>
+</tr>
+<tr>
+<td>images</td>
+<td>31,274</td>
+<td>6.18%</td>
+<td>8.17%</td>
+<td>26,864,083</td>
+</tr>
+<tr>
+<td>footer</td>
+<td>17,350</td>
+<td>4.21%</td>
+<td>5.81%</td>
+<td>14,903,361</td>
+</tr>
+<tr>
+<td>style</td>
+<td>16,031</td>
+<td>3.82%</td>
+<td>4.80%</td>
+<td>13,770,735</td>
+</tr>
+<tr>
+<td>forms</td>
+<td>14,827</td>
+<td>3.29%</td>
+<td>4.33%</td>
+<td>12,736,770</td>
+</tr>
+<tr>
+<td>button</td>
+<td>12,395</td>
+<td>2.54%</td>
+<td>3.47%</td>
+<td>10,647,352</td>
+</tr>
+<tr>
+<td>comments</td>
+<td>7,163</td>
+<td>1.67%</td>
+<td>2.28%</td>
+<td>6,152,769</td>
+</tr>
+<tr>
+<td>aside</td>
+<td>6,539</td>
+<td>1.04%</td>
+<td>1.19%</td>
+<td>5,617,229</td>
+</tr>
+<tr>
+<td>noscript</td>
+<td>1,663</td>
+<td>0.32%</td>
+<td>0.44%</td>
+<td>1,428,938</td>
+</tr>
+<tr>
+<td>iframe</td>
+<td>902</td>
+<td>0.27%</td>
+<td>0.40%</td>
+<td>775,052</td>
+</tr>
+<tr>
+<td>video</td>
+<td>74</td>
+<td>0.03%</td>
+<td>0.03%</td>
+<td>63,815</td>
+</tr>
+<tr>
+<td>canvas</td>
+<td>4</td>
+<td>0.00%</td>
+<td>0.00%</td>
+<td>3,149</td>
+</tr>
+</tbody></table>
 <a id="md:contributing" class="tsd-anchor"></a><h2><a href="#md:contributing">Contributing</a></h2><p>I welcome contributions from the community! Whether it&#39;s improving the documentation, adding new features, or reporting bugs, please feel free to make a pull request or open an issue.</p>
 <a id="md:license" class="tsd-anchor"></a><h2><a href="#md:license">License</a></h2><p>This project is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:html-ai-ready-beta"><span>HTML AI <wbr/>Ready (beta)</span></a><ul><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:usage"><span>Usage</span></a></li><li><a href="#md:benchmark"><span>Benchmark</span></a></li><li><a href="#md:contributing"><span>Contributing</span></a></li><li><a href="#md:license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@mrspartak/html-ai-ready</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div><script>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:html-ai-ready-beta"><span>HTML AI <wbr/>Ready (beta)</span></a><ul><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:usage"><span>Usage</span></a></li><li><a href="#md:benchmark"><span>Benchmark</span></a></li><li><a href="#md:some-website-statistics"><span>Some website statistics</span></a></li><li><ul><li><a href="#md:page-size-statistics"><span>Page <wbr/>Size <wbr/>Statistics</span></a></li><li><a href="#md:crawl-timing-statistics"><span>Crawl <wbr/>Timing <wbr/>Statistics</span></a></li><li><a href="#md:element-size-analysis"><span>Element <wbr/>Size <wbr/>Analysis</span></a></li></ul></li><li><a href="#md:contributing"><span>Contributing</span></a></li><li><a href="#md:license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@mrspartak/html-ai-ready</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div><script>
           try {
             const generateLinkElement = document.querySelector(".tsd-generator a");
             const link = document.createElement("a");
