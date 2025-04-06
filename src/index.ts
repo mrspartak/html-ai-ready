@@ -8,6 +8,9 @@ const PRESETS = {
     stripTagsOptions: {
       handleSelfClosingTags: false,
     },
+    simplifiedMarkdownOptions: {
+      skip: true,
+    },
   },
   QUALITY: {
     tags: [
@@ -31,8 +34,12 @@ const PRESETS = {
     stripTagsOptions: {
       handleSelfClosingTags: true,
     },
+    simplifiedMarkdownOptions: {
+      skip: false,
+    },
   },
 };
+
 export type Preset = keyof typeof PRESETS;
 export const PRESET_FAST: Preset = "FAST";
 export const PRESET_QUALITY: Preset = "QUALITY";
@@ -45,7 +52,9 @@ export function htmlToAiReady(html: string, preset: Preset = PRESET_FAST): strin
   html = cleanupHtml(html);
 
   // Convert to simplified markdown
-  html = simplifiedMarkdown(html);
+  if (!PRESETS[preset].simplifiedMarkdownOptions.skip) {
+    html = simplifiedMarkdown(html);
+  }
 
   // Remove remaining HTML tags
   let text = html.replace(/<[^>]*>/g, " ");
