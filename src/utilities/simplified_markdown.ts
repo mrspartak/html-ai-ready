@@ -17,17 +17,6 @@ export function simplifiedMarkdown(html: string): string {
     return match.replace(/<li[^>]*>(.*?)<\/li>/gi, (match, content) => `\n${index++}. ${content}`);
   });
 
-  // Convert links to simplified format - preserving any complex content inside
-  html = html.replace(
-    /<a[^>]*(?:title=["'](.*?)["'][^>]*)?href=["'][^"']*["'][^>]*>([\s\S]*?)<\/a>/gi,
-    (match, title, content) => {
-      if (title) {
-        return `[Link (${title}): ${content}]`;
-      }
-      return `[Link: ${content}]`;
-    },
-  );
-
   // Convert emphasis (combined regexes)
   html = html.replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, "**$2**");
   html = html.replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, "*$2*");
@@ -36,10 +25,10 @@ export function simplifiedMarkdown(html: string): string {
   html = html.replace(/<p[^>]*>(.*?)<\/p>/gi, "\n\n$1\n\n");
   html = html.replace(/<br\s*\/?>/gi, "\n");
 
-  // Handle images - only keep those with alt attributes
-  html = html.replace(/<img[^>]*alt=["'](.*?)["'][^>]*>/gi, "[Image: $1]");
+  // Handle images - only keep those with non-empty alt attributes
+  html = html.replace(/<img[^>]*alt=["']([^"']+)["'][^>]*>/gi, "[Image: $1]");
 
-  // Remove any remaining images without alt text
+  // Remove any remaining images without alt text or with empty alt text
   html = html.replace(/<img[^>]*>/gi, "");
 
   // Handle code blocks
@@ -75,8 +64,21 @@ export function simplifiedMarkdown(html: string): string {
         }
       }
     }
+
     return result;
   });
+
+  // Convert links to simplified format - preserving any complex content inside
+  html = html.replace(
+    /<a[^>]*(?:title=["'](.*?)["'][^>]*)?href=["'][^"']*["'][^>]*>([\s\S]*?)<\/a>/gi,
+    (match, title, content) => {
+      if (!content) return "";
+      if (title) {
+        return `[Link (${title}): ${content}]`;
+      }
+      return `[Link: ${content}]`;
+    },
+  );
 
   return html;
 }

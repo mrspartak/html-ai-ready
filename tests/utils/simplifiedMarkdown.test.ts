@@ -38,8 +38,11 @@ describe("simplifiedMarkdown", () => {
 
   it("should convert links to markdown", () => {
     expect(simplifiedMarkdown('<a href="https://example.com">Example</a>')).toBe("[Link: Example]");
-
     expect(simplifiedMarkdown('<a href="https://example.com" target="_blank">Example</a>')).toBe("[Link: Example]");
+    expect(simplifiedMarkdown('<a href="https://example.com" title="Title Example">Content Example</a>')).toBe(
+      "[Link: Content Example]",
+    );
+    expect(simplifiedMarkdown('<a href="https://example.com"></a>')).toBe("");
   });
 
   it("should convert emphasis tags to markdown", () => {
@@ -63,6 +66,14 @@ describe("simplifiedMarkdown", () => {
     );
 
     expect(simplifiedMarkdown("<code>const x = 1;</code>")).toBe("`const x = 1;`");
+  });
+
+  it("should convert images to markdown", () => {
+    expect(simplifiedMarkdown("<img src='https://example.com/image.jpg' alt='Image description'>")).toBe(
+      "[Image: Image description]",
+    );
+    expect(simplifiedMarkdown("<img src='https://example.com/image.jpg' alt=''>")).toBe("");
+    expect(simplifiedMarkdown("<img src='https://example.com/image.jpg'>")).toBe("");
   });
 
   it("should convert tables to markdown", () => {
@@ -100,5 +111,20 @@ describe("simplifiedMarkdown", () => {
     expect(markdown).toContain("- Item with *emphasis*");
     expect(markdown).toContain("- Another item");
     expect(markdown).toContain("```\nfunction test() { return true; }\n```");
+  });
+
+  describe("complex content", () => {
+    it("should convert complex content inside links", () => {
+      const html =
+        '<a href="https://example.com"><img src="https://example.com/image.jpg" alt="Image description" /></a>';
+      const markdown = simplifiedMarkdown(html);
+      expect(markdown).toBe("[Link: [Image: Image description]]");
+    });
+
+    it("should ignore empty links even with markup", () => {
+      const html = '<a href="https://example.com"><img src="https://example.com/image.jpg" /></a>';
+      const markdown = simplifiedMarkdown(html);
+      expect(markdown).toBe("");
+    });
   });
 });
