@@ -41,22 +41,51 @@ console.log(aiReady);
 
 ## Benchmark
 
-Take these with a grain of salt, as I did not setup a proper benchmark environment.
-I did 10 runs over a medium sized HTML page (150KB) (33230 tokens) with different tags and content in it.
+The main point of this package is to be fast, give the smallest result in terms of token size and also still maintain the context to answer questions.
+It is compared to a couple of other methods I saw so far.
 
-| Library                                          | Processing Time | Token Count   |
-| ------------------------------------------------ | --------------- | ------------- |
-| @mrspartak/html-ai-ready                         | 4.97ms          | 3,814 tokens  |
-| cherio (parse + remove some tags + text content) | 9.98ms          | 5,850 tokens  |
-| node-html-markdown (convert html to markdown)    | 20.35ms         | 10,027 tokens |
+### Output Size Comparison
 
-Steam Main Page (1MB) (345,697 tokens)
+```bash
+pnpm benchmark
+```
 
-| Library                                          | Processing Time | Token Count   |
-| ------------------------------------------------ | --------------- | ------------- |
-| @mrspartak/html-ai-ready                         | 18.62ms         | 12,128 tokens |
-| cherio (parse + remove some tags + text content) | 87.81ms         | 11,055 tokens |
-| node-html-markdown (convert html to markdown)    | 106.86ms        | 10,027 tokens |
+When comparing the output size across all tested pages (average percentage of original HTML size):
+
+| Method                 | Average Size (% of original) |
+| ---------------------- | ---------------------------- |
+| HTML_TO_AI_FAST        | 24.69%                       |
+| HTML_TO_AI_QUALITY     | 7.76%                        |
+| NODE_HTML_MARKDOWN     | 13.88%                       |
+| CHEERIO_QUALITY_PARSED | 19.31%                       |
+
+### Performance Benchmark
+
+Performance comparison across all pages combined:
+
+| Method                | Operations/sec | Mean time (ms) | Comparison             |
+| --------------------- | -------------- | -------------- | ---------------------- |
+| htmlToAiReady FAST    | 28.76          | 34.77          | Fastest                |
+| htmlToAiReady QUALITY | 15.36          | 65.09          | 1.87x slower than FAST |
+| cheerioParse          | 7.31           | 136.76         | 3.93x slower than FAST |
+| node-html-markdown    | 6.30           | 158.77         | 4.57x slower than FAST |
+
+### AI Response Quality and Token Usage
+
+```bash
+# don't forget to add OPENAI_API_KEY to .env file first
+pnpm aiq
+```
+
+To test real-world effectiveness, we used 3 HTML pages as context for AI and asked deterministic questions. The results show accuracy rates, token usage, and AI response times:
+
+| Method                   | Accuracy       | Avg Tokens | Avg Response Time |
+| ------------------------ | -------------- | ---------- | ----------------- |
+| htmlToAiReadyTextQuality | 15/20 (75.00%) | 10,759     | 618.75ms          |
+| cherioText               | 15/20 (75.00%) | 12,931     | 5,377.55ms        |
+| nodeHtmlMarkdownText     | 14/20 (70.00%) | 27,389     | 2,099.20ms        |
+
+As shown in the benchmarks, the QUALITY preset not only maintains the same accuracy as Cheerio while using fewer tokens, but it also delivers responses significantly faster. The FAST preset offers the best performance while the QUALITY preset provides the smallest output size with excellent accuracy, giving you options depending on your priority.
 
 ## Some website statistics
 
