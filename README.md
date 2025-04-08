@@ -133,6 +133,14 @@ Ordered by total size across all pages:
 | video    | 74                   | 0.03%     | 0.03%     | 63,815             |
 | canvas   | 4                    | 0.00%     | 0.00%     | 3,149              |
 
+## Kudos
+
+This project wouldn't be possible without the valuable contributions and support from:
+
+- [Marcel van de Weerd](https://github.com/mvandeweerd)
+- [Siddhesh Deshpande](https://github.com/siddhesh-deshpande89)
+- [Trengo Team](https://github.com/weerdm) - For providing real-world use case
+
 ## Contributing
 
 I welcome contributions from the community! Whether it's improving the documentation, adding new features, or reporting bugs, please feel free to make a pull request or open an issue.
