@@ -2,7 +2,7 @@
   "name": "@mrspartak/html-ai-ready",
   "repository": "https://github.com/mrspartak/html-ai-ready",
   "homepage": "https://mrspartak.github.io/html-ai-ready",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "HTML AI Ready",
   "private": false,
   "main": "./dist/index.js",
