@@ -1,4 +1,4 @@
-# HTML AI Ready (beta)
+# HTML AI Ready
 
 <p align="center">
   <a href="https://npmjs.com/package/@mrspartak/html-ai-ready"><img src="https://img.shields.io/npm/v/@mrspartak/html-ai-ready.svg" alt="npm package"></a>
@@ -31,10 +31,10 @@ bun add @mrspartak/html-ai-ready
 ## Usage
 
 ```ts
-import { htmlToAiReady, PRESET_FAST } from "@mrspartak/html-ai-ready";
+import { htmlToAiReady, PRESET_QUALITY } from "@mrspartak/html-ai-ready";
 
 const html = "<p>Hello, world!</p>";
-const aiReady = htmlToAiReady(html, PRESET_FAST);
+const aiReady = htmlToAiReady(html, PRESET_QUALITY);
 
 console.log(aiReady);
 ```
