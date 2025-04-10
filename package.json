@@ -21,7 +21,6 @@
     "check:format": "biome format --write ./src",
     "check:lint": "biome lint ./src",
     "local:node": "tsx local/main.ts",
-    "prepublishOnly": "node ./bin/prepublish.js && pnpm build && agadoo",
     "version": "pnpm doc && git add docs",
     "release": "cross-env RELEASE_MODE=true np",
     "doc": "typedoc --logLevel Verbose"
