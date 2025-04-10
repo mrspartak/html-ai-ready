@@ -9,6 +9,10 @@ export default defineConfig([
     minify: false,
     dts: true,
     outDir: "./dist",
+    esbuildOptions: (options) => {
+      options.external = [...(options.external || []), "./native/*"];
+    },
+    noExternal: [],
   },
   // Minified build
   {
@@ -21,5 +25,9 @@ export default defineConfig([
     outExtension: ({ format }) => ({
       js: format === "cjs" ? ".min.cjs" : ".min.js",
     }),
+    esbuildOptions: (options) => {
+      options.external = [...(options.external || []), "./native/*"];
+    },
+    noExternal: [],
   },
 ]);
