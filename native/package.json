@@ -15,7 +15,7 @@
     "index.d.ts"
   ],
   "napi": {
-    "name": "@mrspartak/html-ai-ready-native",
+    "name": "html-ai-ready-native",
     "triples": {
       "defaults": true,
       "additional": [
