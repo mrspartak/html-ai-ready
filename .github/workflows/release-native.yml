@@ -46,18 +46,11 @@ jobs:
         run: |
           sudo softwareupdate --install-rosetta --agree-to-license
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Install dependencies
-        working-directory: ./native
-        run: pnpm install
-
       - name: Build native binary
         working-directory: ./native
-        run: pnpm build -- --target=${{ matrix.settings.target }}
+        run: |
+          echo "Building for target ${{ matrix.settings.target }}"
+          npx @napi-rs/cli build --platform --release --target ${{ matrix.settings.target }}
 
       - name: Debug folder
         working-directory: ./native
