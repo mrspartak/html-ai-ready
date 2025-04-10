@@ -15,7 +15,3 @@ npm-debug.log
 # OS specific files
 .DS_Store
 Thumbs.db
-
-# Generated JavaScript binding files (if applicable)
-/index.js
-/index.d.ts
