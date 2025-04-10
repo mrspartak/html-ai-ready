@@ -57,7 +57,7 @@ jobs:
 
       - name: Build native binary
         working-directory: ./native
-        run: pnpm run build --target ${{ matrix.settings.target }}
+        run: pnpm build -- --target=${{ matrix.settings.target }}
 
       - name: Debug folder
         working-directory: ./native
