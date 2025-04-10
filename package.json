@@ -27,9 +27,6 @@
   },
   "author": "Spartak Kagramanyan",
   "license": "MIT",
-  "dependencies": {
-    "@napi-rs/cli": "^2.16.3"
-  },
   "devDependencies": {
     "@biomejs/biome": "1.8.0",
     "@dotenvx/dotenvx": "^0.45.0",
