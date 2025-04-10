@@ -52,11 +52,6 @@ jobs:
           echo "Building for target ${{ matrix.settings.target }}"
           npx @napi-rs/cli build --platform --release --target ${{ matrix.settings.target }}
 
-      - name: Debug folder
-        working-directory: ./native
-        run: |
-          ls -la
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
