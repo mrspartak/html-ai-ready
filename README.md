@@ -15,6 +15,9 @@ The other and actually really good approach is to use HTML -> Markdown converter
 
 This library is experimental and in personal tests showed the same quality results as plain HTML or Markdown, but much less tokens and a bit faster.
 
+There is also a native version of the library, which is faster and smaller in size but in beta stage.
+[html-ai-ready-native](https://www.npmjs.com/package/@mrspartak/html-ai-ready-native)
+
 ## Installation
 
 ```bash
@@ -56,6 +59,7 @@ When comparing the output size across all tested pages (average percentage of or
 | ---------------------- | ---------------------------- |
 | HTML_TO_AI_FAST        | 24.69%                       |
 | HTML_TO_AI_QUALITY     | 7.76%                        |
+| HTML_TO_AI_NATIVE      | 12.19%                       |
 | NODE_HTML_MARKDOWN     | 13.88%                       |
 | CHEERIO_QUALITY_PARSED | 19.31%                       |
 
@@ -63,12 +67,13 @@ When comparing the output size across all tested pages (average percentage of or
 
 Performance comparison across all pages combined:
 
-| Method                | Operations/sec | Mean time (ms) | Comparison             |
-| --------------------- | -------------- | -------------- | ---------------------- |
-| htmlToAiReady FAST    | 28.76          | 34.77          | Fastest                |
-| htmlToAiReady QUALITY | 15.36          | 65.09          | 1.87x slower than FAST |
-| cheerioParse          | 7.31           | 136.76         | 3.93x slower than FAST |
-| node-html-markdown    | 6.30           | 158.77         | 4.57x slower than FAST |
+| Method                | Operations/sec | Mean time (ms) | Comparison                |
+| --------------------- | -------------- | -------------- | ------------------------- |
+| htmlToAiReady NATIVE  | 73.31          | 13.63          | Fastest                   |
+| htmlToAiReady FAST    | 28.76          | 34.77          | 2.55x slower than NATIVE  |
+| htmlToAiReady QUALITY | 15.36          | 65.09          | 4.83x slower than NATIVE  |
+| cheerioParse          | 7.31           | 136.76         | 9.93x slower than NATIVE  |
+| node-html-markdown    | 6.30           | 158.77         | 11.54x slower than NATIVE |
 
 ### AI Response Quality and Token Usage
 

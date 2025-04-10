@@ -1,4 +1,4 @@
-# HTML AI Ready Native
+# HTML AI Ready Native (beta)
 
 <p align="center">
   <a href="https://npmjs.com/package/@mrspartak/html-ai-ready"><img src="https://img.shields.io/npm/v/@mrspartak/html-ai-ready.svg" alt="npm package"></a>
@@ -37,11 +37,6 @@ const aiReady = htmlToAiReadyNative(html, PRESET_QUALITY);
 
 console.log(aiReady);
 ```
-
-## Benchmark
-
-The main point of this package is to be fast, give the smallest result in terms of token size and also still maintain the context to answer questions.
-It is compared to a couple of other methods I saw so far.
 
 ## Kudos
 
