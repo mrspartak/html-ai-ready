@@ -102,9 +102,24 @@ jobs:
           else
             npm version $VERSION --no-git-tag-version
           fi
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Publish to npm
         working-directory: ./native
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit version changes
+        run: |
+          git add ./native/package.json
+          git commit -m "chore(native): bump version to ${{ env.NEW_VERSION }}"
+
+      - name: Push changes
+        run: git push
+
+      - name: Create Git tag
+        run: |
+          git tag -a "native-v${{ env.NEW_VERSION }}" -m "Native package v${{ env.NEW_VERSION }}"
+          git push --tags
