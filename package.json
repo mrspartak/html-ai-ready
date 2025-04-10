@@ -64,7 +64,7 @@
     }
   },
   "sideEffects": false,
-  "files": ["dist", "native/*.node", "native/index.d.ts", "native/index.js"],
+  "files": ["dist"],
   "napi": {
     "name": "html-ai-ready-native",
     "triples": {

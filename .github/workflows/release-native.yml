@@ -52,10 +52,17 @@ jobs:
           version: 8
 
       - name: Install dependencies
-        run: cd native && pnpm install
+        working-directory: ./native
+        run: pnpm install
 
       - name: Build native binary
-        run: cd native && pnpm run build --target ${{ matrix.settings.target }}
+        working-directory: ./native
+        run: pnpm run build --target ${{ matrix.settings.target }}
+
+      - name: Debug folder
+        working-directory: ./native
+        run: |
+          ls -la
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -68,11 +75,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Git user
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           registry-url: "https://registry.npmjs.org"
 
       - name: Install pnpm
@@ -91,8 +106,8 @@ jobs:
           find artifacts -name "*.node" -exec cp {} native/ \;
 
       - name: Update version
+        working-directory: ./native
         run: |
-          cd native
           VERSION=${{ github.event.inputs.version }}
           if [ "$VERSION" = "patch" ] || [ "$VERSION" = "minor" ] || [ "$VERSION" = "major" ]; then
             npm version $VERSION --no-git-tag-version
@@ -101,6 +116,7 @@ jobs:
           fi
 
       - name: Publish to npm
-        run: cd native && npm publish --access public
+        working-directory: ./native
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
