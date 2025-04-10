@@ -2,7 +2,7 @@
   "name": "@mrspartak/html-ai-ready",
   "repository": "https://github.com/mrspartak/html-ai-ready",
   "homepage": "https://mrspartak.github.io/html-ai-ready",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "HTML AI Ready",
   "private": false,
   "main": "./dist/index.js",
@@ -10,7 +10,6 @@
   "type": "module",
   "scripts": {
     "build": "tsup",
-    "build:native": "cd native && napi build --platform --release",
     "dev": "vitest --dir ./tests",
     "aiq": "dotenvx run -- npx tsx tests/ai-quality.ts",
     "benchmark": "vitest bench --dir ./tests",
@@ -21,6 +20,7 @@
     "check:format": "biome format --write ./src",
     "check:lint": "biome lint ./src",
     "local:node": "tsx local/main.ts",
+    "prepublishOnly": "node ./bin/prepublish.js && pnpm build && agadoo",
     "version": "pnpm doc && git add docs",
     "release": "cross-env RELEASE_MODE=true np",
     "doc": "typedoc --logLevel Verbose"
@@ -67,12 +67,7 @@
     }
   },
   "sideEffects": false,
-  "files": [
-    "dist",
-    "native/*.node",
-    "native/index.d.ts",
-    "native/index.js"
-  ],
+  "files": ["dist", "native/*.node", "native/index.d.ts", "native/index.js"],
   "napi": {
     "name": "html-ai-ready-native",
     "triples": {

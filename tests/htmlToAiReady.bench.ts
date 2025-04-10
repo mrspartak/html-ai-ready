@@ -2,7 +2,8 @@ import fs from "node:fs";
 import * as cheerio from "cheerio";
 import { NodeHtmlMarkdown } from "node-html-markdown";
 import { beforeAll, bench, describe } from "vitest";
-import { PRESET_FAST, PRESET_QUALITY, htmlToAiReady, htmlToAiReadyNative } from "../src";
+import { htmlToAiReadyNative } from "../native";
+import { PRESET_FAST, PRESET_QUALITY, htmlToAiReady } from "../src";
 
 const pages = {
   steam: "",

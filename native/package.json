@@ -1,9 +1,21 @@
 {
-  "name": "html-ai-ready-native",
+  "name": "@mrspartak/html-ai-ready-native",
   "version": "0.1.0",
   "main": "index.js",
+  "types": "index.d.ts",
+  "description": "Native Rust bindings for HTML AI Ready",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrspartak/html-ai-ready",
+    "directory": "native"
+  },
+  "files": [
+    "*.node",
+    "index.js",
+    "index.d.ts"
+  ],
   "napi": {
-    "name": "html-ai-ready-native",
+    "name": "@mrspartak/html-ai-ready-native",
     "triples": {
       "defaults": true,
       "additional": [
@@ -13,5 +25,12 @@
         "aarch64-linux-android"
       ]
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform"
   }
 }
