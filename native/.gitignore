@@ -1,0 +1,21 @@
+# Rust output files
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# NAPI build artifacts
+*.node
+build/
+
+# Node.js files
+node_modules/
+npm-debug.log
+.npm
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Generated JavaScript binding files (if applicable)
+/index.js
+/index.d.ts

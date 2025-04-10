@@ -2,7 +2,7 @@ import fs from "node:fs";
 import * as cheerio from "cheerio";
 import { NodeHtmlMarkdown } from "node-html-markdown";
 import { beforeAll, bench, describe } from "vitest";
-import { PRESET_FAST, PRESET_QUALITY, htmlToAiReady } from "../src";
+import { PRESET_FAST, PRESET_QUALITY, htmlToAiReady, htmlToAiReadyNative } from "../src";
 
 const pages = {
   steam: "",
@@ -35,6 +35,7 @@ beforeAll(async () => {
       raw: number;
       fast: { size: number; percentage: number };
       quality: { size: number; percentage: number };
+      native: { size: number; percentage: number };
       markdown: { size: number; percentage: number };
       cheerio: { size: number; percentage: number };
     }
@@ -47,11 +48,13 @@ beforeAll(async () => {
 
     const htmlToAiFast = htmlToAiReady(pageContent, PRESET_FAST);
     const htmlToAiQuality = htmlToAiReady(pageContent, PRESET_QUALITY);
+    const htmlToAiNative = htmlToAiReadyNative(pageContent, PRESET_QUALITY);
     const nodeHtmlMarkdown = NodeHtmlMarkdown.translate(pageContent);
     const cheerioResult = cheerioParse(pageContent);
 
     const fastSize = getTokenSize(htmlToAiFast);
     const qualitySize = getTokenSize(htmlToAiQuality);
+    const nativeSize = getTokenSize(htmlToAiNative);
     const markdownSize = getTokenSize(nodeHtmlMarkdown);
     const cheerioSize = getTokenSize(cheerioResult);
 
@@ -59,6 +62,7 @@ beforeAll(async () => {
       raw: rawSize,
       fast: { size: fastSize, percentage: (fastSize * 100) / rawSize },
       quality: { size: qualitySize, percentage: (qualitySize * 100) / rawSize },
+      native: { size: nativeSize, percentage: (nativeSize * 100) / rawSize },
       markdown: { size: markdownSize, percentage: (markdownSize * 100) / rawSize },
       cheerio: { size: cheerioSize, percentage: (cheerioSize * 100) / rawSize },
     };
@@ -67,12 +71,14 @@ beforeAll(async () => {
   // Calculate and display average sizes across all pages
   let avgFastSize = 0;
   let avgQualitySize = 0;
+  let avgNativeSize = 0;
   let avgMarkdownSize = 0;
   let avgCheerioSize = 0;
 
   for (const result of Object.values(results)) {
     avgFastSize += result.fast.percentage;
     avgQualitySize += result.quality.percentage;
+    avgNativeSize += result.native.percentage;
     avgMarkdownSize += result.markdown.percentage;
     avgCheerioSize += result.cheerio.percentage;
   }
@@ -83,6 +89,7 @@ beforeAll(async () => {
   console.log(`Total RAW size: ${totalRawSize}`);
   console.log(`HTML_TO_AI_FAST avg: ${(avgFastSize / pageCount).toFixed(2)}%`);
   console.log(`HTML_TO_AI_QUALITY avg: ${(avgQualitySize / pageCount).toFixed(2)}%`);
+  console.log(`HTML_TO_AI_NATIVE avg: ${(avgNativeSize / pageCount).toFixed(2)}%`);
   console.log(`NODE_HTML_MARKDOWN avg: ${(avgMarkdownSize / pageCount).toFixed(2)}%`);
   console.log(`CHEERIO_QUALITY_PARSED avg: ${(avgCheerioSize / pageCount).toFixed(2)}%`);
 });
@@ -98,6 +105,12 @@ describe("Benchmark all pages combined", () => {
   bench("htmlToAiReady QUALITY - all pages", () => {
     for (const page of Object.values(pages)) {
       htmlToAiReady(page, PRESET_QUALITY);
+    }
+  });
+
+  bench("htmlToAiReady NATIVE - all pages", () => {
+    for (const page of Object.values(pages)) {
+      htmlToAiReadyNative(page, PRESET_FAST);
     }
   });
 

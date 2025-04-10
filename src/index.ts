@@ -1,3 +1,4 @@
+import { htmlToAiReadyNative } from "../native";
 import { cleanupHtml } from "./utilities/cleanup_html";
 import { simplifiedMarkdown } from "./utilities/simplified_markdown";
 import { stripTagsWithContent } from "./utilities/striptag";
@@ -72,10 +73,21 @@ export type Preset = keyof typeof PRESETS;
 export const PRESET_FAST: Preset = "FAST";
 
 /**
- * Preset optimized for content quality and cleanliness.
- * Use when you need the cleanest possible output for AI processing.
+ * Preset optimized for content quality.
+ * Preserves more formatting while still reducing tokens.
  */
 export const PRESET_QUALITY: Preset = "QUALITY";
+
+/**
+ * Native implementation of htmlToAiReady using Rust.
+ * This function has the same API as htmlToAiReady but uses compiled Rust code for better performance.
+ * Falls back to JS implementation if native module is not available.
+ *
+ * @param html - The HTML string to process
+ * @param preset - Processing configuration preset (FAST or QUALITY)
+ * @returns A clean text representation of the content, optimized for AI consumption
+ */
+export { htmlToAiReadyNative };
 
 /**
  * Converts HTML content to a format optimized for AI processing.
