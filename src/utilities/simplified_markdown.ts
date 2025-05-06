@@ -68,6 +68,27 @@ export function simplifiedMarkdown(html: string): string {
     return result;
   });
 
+  // Convert select components to a structured markdown format
+  html = html.replace(/<select[^>]*>(.*?)<\/select>/gis, (match) => {
+    const selectName =
+      match.match(/name=["']([^"']*)["']/i)?.[1] || match.match(/id=["']([^"']*)["']/i)?.[1] || "Unnamed selection";
+
+    const options = match.match(/<option[^>]*>(.*?)<\/option>/gi);
+    if (!options) return "";
+
+    const formattedOptions = options.map((option) => {
+      const value = option.match(/value=["']([^"']*)["']/i)?.[1];
+      const content = option.replace(/<option[^>]*>(.*?)<\/option>/i, "$1").trim();
+
+      if (value !== undefined) {
+        return `${value}: ${content}`;
+      }
+      return content;
+    });
+
+    return `\n[Select: ${selectName}]\nOptions: ${formattedOptions.join(", ")}\n`;
+  });
+
   // Convert links to simplified format - preserving any complex content inside
   html = html.replace(
     /<a[^>]*(?:title=["'](.*?)["'][^>]*)?href=["'][^"']*["'][^>]*>([\s\S]*?)<\/a>/gi,

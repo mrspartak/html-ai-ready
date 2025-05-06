@@ -38,6 +38,13 @@ describe("htmlToAiReady", () => {
       const result = htmlToAiReady(html, PRESET_FAST);
       expect(result).toBe("Visible content");
     });
+
+    it("should keep content of form tag", () => {
+      const html =
+        "<form><input type='text' name='name' value='John'><input type='submit' value='Submit'> Content</form>";
+      const result = htmlToAiReady(html, PRESET_FAST);
+      expect(result).toBe("Content");
+    });
   });
 
   describe("PRESET_QUALITY", () => {
@@ -105,6 +112,12 @@ describe("htmlToAiReady", () => {
       const html = "<div>Content<aside>Side note</aside><iframe src='example.com'></iframe></div>";
       const result = htmlToAiReady(html, PRESET_QUALITY);
       expect(result).toBe("Content");
+    });
+
+    it("should handle select components", () => {
+      const html = "<select name='color'><option value='red'>Red</option><option value='blue'>Blue</option></select>";
+      const result = htmlToAiReady(html, PRESET_QUALITY);
+      expect(result).toBe("[Select: color] Options: red: Red, blue: Blue");
     });
   });
 });

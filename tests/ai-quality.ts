@@ -2,6 +2,7 @@ import fs from "node:fs";
 import * as cheerio from "cheerio";
 import { NodeHtmlMarkdown } from "node-html-markdown";
 import { OpenAI } from "openai";
+import { htmlToAiReadyNative } from "../native";
 import { PRESET_QUALITY, htmlToAiReady } from "../src";
 
 const prompt = `
@@ -131,9 +132,10 @@ function prepareTexts(html: string) {
   ).remove();
   const cherioText = $.text();
   const htmlToAiReadyTextQuality = htmlToAiReady(html, PRESET_QUALITY);
+  const htmlToAiReadyTextNative = htmlToAiReadyNative(html, PRESET_QUALITY);
   const nodeHtmlMarkdownText = NodeHtmlMarkdown.translate(html);
 
-  return { cherioText, htmlToAiReadyTextQuality, nodeHtmlMarkdownText };
+  return { cherioText, htmlToAiReadyTextQuality, htmlToAiReadyTextNative, nodeHtmlMarkdownText };
 }
 
 function getHtmls(path: string) {

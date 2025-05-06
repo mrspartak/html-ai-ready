@@ -12,7 +12,7 @@ const PRESETS = {
    * Removes only essential non-content elements and skips markdown conversion.
    */
   FAST: {
-    tags: ["head", "svg", "nav", "script", "style", "form", "button"],
+    tags: ["head", "svg", "nav", "script", "style", "button"],
     stripTagsOptions: {
       handleSelfClosingTags: false,
     },
@@ -32,7 +32,6 @@ const PRESETS = {
       "nav",
       "script",
       "style",
-      "form",
       "button",
       "aside",
       "noscript",
