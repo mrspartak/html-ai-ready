@@ -169,6 +169,8 @@
 One of the approaches is to just strip all the HTML tags and leave only the text, which still leaves some useless information like <code>style</code> and <code>script</code> tags.
 The other and actually really good approach is to use HTML -&gt; Markdown converter. But we can still gain a bit of performance and reduce tokens as AI does not really care about proper markdown, spaces etc.</p>
 <p>This library is experimental and in personal tests showed the same quality results as plain HTML or Markdown, but much less tokens and a bit faster.</p>
+<p>There is also a native version of the library, which is faster and smaller in size but in beta stage.
+<a href="https://www.npmjs.com/package/@mrspartak/html-ai-ready-native">html-ai-ready-native</a></p>
 <a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><pre><code class="language-bash"><span class="hl-0"># yarn</span><br/><span class="hl-1">yarn</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span><br/><span class="hl-0"># npm</span><br/><span class="hl-1">npm</span><span class="hl-2"> </span><span class="hl-3">i</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span><br/><span class="hl-0"># pnpm</span><br/><span class="hl-1">pnpm</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span><br/><span class="hl-0"># bun</span><br/><span class="hl-1">bun</span><span class="hl-2"> </span><span class="hl-3">add</span><span class="hl-2"> </span><span class="hl-3">@mrspartak/html-ai-ready</span>
 </code><button>Copy</button></pre>
 <a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-2"> { </span><span class="hl-5">htmlToAiReady</span><span class="hl-2">, </span><span class="hl-5">PRESET_QUALITY</span><span class="hl-2"> } </span><span class="hl-4">from</span><span class="hl-2"> </span><span class="hl-3">&quot;@mrspartak/html-ai-ready&quot;</span><span class="hl-2">;</span><br/><br/><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">html</span><span class="hl-2"> = </span><span class="hl-3">&quot;&lt;p&gt;Hello, world!&lt;/p&gt;&quot;</span><span class="hl-2">;</span><br/><span class="hl-6">const</span><span class="hl-2"> </span><span class="hl-7">aiReady</span><span class="hl-2"> = </span><span class="hl-1">htmlToAiReady</span><span class="hl-2">(</span><span class="hl-5">html</span><span class="hl-2">, </span><span class="hl-7">PRESET_QUALITY</span><span class="hl-2">);</span><br/><br/><span class="hl-5">console</span><span class="hl-2">.</span><span class="hl-1">log</span><span class="hl-2">(</span><span class="hl-5">aiReady</span><span class="hl-2">);</span>
@@ -194,6 +196,10 @@ It is compared to a couple of other methods I saw so far.</p>
 <td>7.76%</td>
 </tr>
 <tr>
+<td>HTML_TO_AI_NATIVE</td>
+<td>12.19%</td>
+</tr>
+<tr>
 <td>NODE_HTML_MARKDOWN</td>
 <td>13.88%</td>
 </tr>
@@ -213,28 +219,34 @@ It is compared to a couple of other methods I saw so far.</p>
 </tr>
 </thead>
 <tbody><tr>
+<td>htmlToAiReady NATIVE</td>
+<td>73.31</td>
+<td>13.63</td>
+<td>Fastest</td>
+</tr>
+<tr>
 <td>htmlToAiReady FAST</td>
 <td>28.76</td>
 <td>34.77</td>
-<td>Fastest</td>
+<td>2.55x slower than NATIVE</td>
 </tr>
 <tr>
 <td>htmlToAiReady QUALITY</td>
 <td>15.36</td>
 <td>65.09</td>
-<td>1.87x slower than FAST</td>
+<td>4.83x slower than NATIVE</td>
 </tr>
 <tr>
 <td>cheerioParse</td>
 <td>7.31</td>
 <td>136.76</td>
-<td>3.93x slower than FAST</td>
+<td>9.93x slower than NATIVE</td>
 </tr>
 <tr>
 <td>node-html-markdown</td>
 <td>6.30</td>
 <td>158.77</td>
-<td>4.57x slower than FAST</td>
+<td>11.54x slower than NATIVE</td>
 </tr>
 </tbody></table>
 <a id="md:ai-response-quality-and-token-usage" class="tsd-anchor"></a><h3><a href="#md:ai-response-quality-and-token-usage">AI Response Quality and Token Usage</a></h3><pre><code class="language-bash"><span class="hl-0"># don&#39;t forget to add OPENAI_API_KEY to .env file first</span><br/><span class="hl-1">pnpm</span><span class="hl-2"> </span><span class="hl-3">aiq</span>
