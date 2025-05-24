@@ -1,5 +1,6 @@
-# HTML AI Ready
-
+<p align="center">
+  <img width="560" src="https://raw.githubusercontent.com/mrspartak/html-ai-ready/master/assets/logo.jpg" alt="@mrspartak/html-ai-ready logo">
+</p>
 <p align="center">
   <a href="https://npmjs.com/package/@mrspartak/html-ai-ready"><img src="https://img.shields.io/npm/v/@mrspartak/html-ai-ready.svg" alt="npm package"></a>
   <a href="https://npmjs.com/package/@mrspartak/html-ai-ready"><img src="https://img.shields.io/bundlephobia/min/%40mrspartak/html-ai-ready.svg" alt="bundle size"></a>
@@ -8,6 +9,8 @@
   <a href='https://coveralls.io/github/mrspartak/html-ai-ready?branch=master'><img src='https://coveralls.io/repos/github/mrspartak/html-ai-ready/badge.svg?branch=master' alt='Coverage Status' /></a>
 </p>
 <br/>
+
+# HTML AI Ready
 
 Raw HTML is usable by AI, but contains huge amount of token noise, implodes costs and latency.
 One of the approaches is to just strip all the HTML tags and leave only the text, which still leaves some useless information like `style` and `script` tags.
